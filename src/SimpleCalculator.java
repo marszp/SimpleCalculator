@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 public class SimpleCalculator implements Runnable{
 
+    //!!!!!!!!!!!!!!! INSTANCE VARIABLES called sometimes POLAMI !!!!!!!!!!!!!!!
     private Double WalueA = 0.0;
     private String WalueAString ="0.0";
     private Double WalueB = 0.0;
@@ -15,43 +16,47 @@ public class SimpleCalculator implements Runnable{
     private String SignOfMethod = null;
     private Boolean isMethodSelected = false;
     private String acctualSign = "+";
+    JLabel myCalculatorScoreLabel = new JLabel(""+getScore(),SwingConstants.CENTER);
+    JLabel myCalculatorMethodLabel = new JLabel(("A= "+getWalueA() +" "+getSignOfMethod() +" B= " +getWalueB()),SwingConstants.CENTER);
 
-    JLabel myCalculatorScoreLabel = new JLabel(""+Score,SwingConstants.CENTER);
-    JLabel myCalculatorMethodLabel = new JLabel(("A= "+getWalueA() +" "+getSignOfMethod() +" B= " +getWalueB()) +"dupa",SwingConstants.CENTER);
-
-
+    //!!!!!!!!!!!!!!! GETTERS !!!!!!!!!!!!!!!
     public Double getWalueA() {
         return WalueA;
     }
     public Double getWalueB() {
         return WalueB;
     }
-    public Double getScore() {
-        return Score;
-    }
+    public String getWalueAString() { return WalueAString; }
+    public String getWalueBString() { return WalueBString; }
     public String getSignOfMethod() {
         return SignOfMethod;
     }
-    public void setWalueA(Double walueA) {
-        WalueA = walueA;
+    public Double getScore() {
+        return Score;
     }
-    public void setWalueB(Double walueB) {
-        WalueB = walueB;
-    }
-    public void setScore(Double score) {
-        Score = score;
-    }
+    public Boolean getIsMethodSelected() { return isMethodSelected; }
+    public String getAcctualSign() { return acctualSign; }
 
+    //!!!!!!!!!!!!!!! SETTERS !!!!!!!!!!!!!!!
+    public void setWalueA(Double tempWalueA) { WalueA = tempWalueA; }
+    public void setWalueB(Double tempWalueB) { WalueB = tempWalueB; }
+    public void setScore(Double tempScore) { Score = tempScore; }
+    public void setWalueAString(String tempWalueAString) { WalueAString = tempWalueAString; }
+    public void setWalueBString(String tempWalueBString) { WalueBString = tempWalueBString; }
+    public void setIsMethodSelected(Boolean tempIsMethodSelected) {isMethodSelected = tempIsMethodSelected;}
+    public void setAcctualSign(String tempAcctualSign) { acctualSign = tempAcctualSign; }
+
+    //!!!!!!!!!!!!!!! SECOND THREAD RUN METOD - FOR GUI UPDATE !!!!!!!!!!!!!!!
     @Override
     public void run() {
         while(true){
-            if(WalueAString != "0.0"){
-                WalueA = Double.parseDouble(WalueAString);
+            if(getWalueAString() != "0.0"){
+                setWalueA(Double.parseDouble(WalueAString));
                 //Score = WalueA;
             }
-            if(WalueBString != "0.0") {
-                if(WalueBString !="-") {
-                    WalueB = Double.parseDouble(WalueBString);
+            if(getWalueBString() != "0.0") {
+                if(getWalueBString()  !="-") {
+                    setWalueB(Double.parseDouble(WalueBString));
                     //Score = WalueB;
                 }
             }
@@ -63,15 +68,15 @@ public class SimpleCalculator implements Runnable{
         }
     }
 
+    //!!!!!!!!!!!!!!! MAIN MENU - CREATE INSTANCE OF CALCULATOR + CREATE GUI + SECOND THREAD !!!!!!!!!!!!!!!
     public static void main(String[] args) {
         SimpleCalculator myFirstCalculator = new SimpleCalculator();
         Thread firstThread = new Thread(myFirstCalculator);
         firstThread.start();
         myFirstCalculator.createGuiMethod();
     }
-
+    //!!!!!!!!!!!!!!! METHOD FOR GUI !!!!!!!!!!!!!!!
     public void createGuiMethod(){
-        //This method creates GUI for calculator
         //-----------BUTTONS-----------
         JButton myCalculatorAddButton = new JButton(" + ");
         JButton myCalculatorSubstractButton = new JButton(" - ");
@@ -184,6 +189,31 @@ public class SimpleCalculator implements Runnable{
         myCalculatorClearButton.addActionListener(new clearLabelFromData());
     }
 
+    //!!!!!!!!!!!!!!! LOGIC FOR ADD - IN PROGRESSS !!!!!!!!!!!!!!
+    public class addCurrentWalues implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(getIsMethodSelected()== false){
+                setIsMethodSelected(true); //isMethodSelected = true;
+                setAcctualSign("+");//acctualSign = "+";
+            }else{
+                try{
+                    setScore(getWalueA()+getWalueB());// Score = WalueA + WalueB;
+                    setWalueA(getScore());// WalueA = Score;
+                    setWalueAString(getScore().toString()); // WalueAString = Score.toString();
+
+                    WalueBString ="0.0";
+                    //myCalculatorScoreLabel.setText(Score.toString());
+                    //isMethodSelected = false;
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+
     public class insertDotToWalue implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -206,27 +236,7 @@ public class SimpleCalculator implements Runnable{
         }
     }
 
-    public class addCurrentWalues implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(isMethodSelected == false){
-                isMethodSelected = true;
-                acctualSign = "+";
-            }else{
-                try{
-                    Score = WalueA + WalueB;
-                    WalueA = Score;
-                    WalueAString = Score.toString();
-                    WalueBString ="0.0";
-                    //myCalculatorScoreLabel.setText(Score.toString());
-                    //isMethodSelected = false;
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
 
-            }
-        }
-    }
 
     public class substractCurrentWalues implements ActionListener{
         @Override
@@ -384,12 +394,13 @@ public class SimpleCalculator implements Runnable{
     public class clearLabelFromData implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            isMethodSelected = false;
             setScore(0.0);
             setWalueA(0.0);
             setWalueB(0.0);
-            isMethodSelected = false;
-            WalueAString = "0.0";
-            WalueBString = "0.0";
+            setWalueAString("0.0"); //WalueAString = "0.0";
+            setWalueBString("0.0"); //WalueBString = "0.0";
+
             myCalculatorScoreLabel.setText(Score.toString());
             myCalculatorMethodLabel.setText("A = " + WalueAString + " B = " + WalueBString);
         }
