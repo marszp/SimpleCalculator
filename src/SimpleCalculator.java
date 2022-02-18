@@ -194,17 +194,16 @@ public class SimpleCalculator implements Runnable{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(getIsMethodSelected()== false){
-                setIsMethodSelected(true); //isMethodSelected = true;
-                setAcctualSign("+");//acctualSign = "+";
+                setIsMethodSelected(true);                      //isMethodSelected = true;
+                setAcctualSign("+");                            //acctualSign = "+";
             }else{
                 try{
-                    setScore(getWalueA()+getWalueB());// Score = WalueA + WalueB;
-                    setWalueA(getScore());// WalueA = Score;
-                    setWalueAString(getScore().toString()); // WalueAString = Score.toString();
-
-                    WalueBString ="0.0";
-                    //myCalculatorScoreLabel.setText(Score.toString());
-                    //isMethodSelected = false;
+                    setScore(getWalueA()+getWalueB());          // Score = WalueA + WalueB;
+                    setWalueA(getScore());                      // WalueA = Score;
+                    setWalueAString(getScore().toString());     // WalueAString = Score.toString();
+                    setWalueBString("0.0");                     //    WalueBString ="0.0";
+                                                                //myCalculatorScoreLabel.setText(Score.toString());
+                                                                //isMethodSelected = false;
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
