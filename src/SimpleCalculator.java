@@ -189,7 +189,7 @@ public class SimpleCalculator implements Runnable{
         myCalculatorClearButton.addActionListener(new clearLabelFromData());
     }
 
-    //!!!!!!!!!!!!!!! LOGIC FOR ADD - IN PROGRESSS !!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!! METHOD FOR ADD !!!!!!!!!!!!!!
     public class addCurrentWalues implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -202,58 +202,32 @@ public class SimpleCalculator implements Runnable{
                     setWalueA(getScore());                      // WalueA = Score;
                     setWalueAString(getScore().toString());     // WalueAString = Score.toString();
                     setWalueBString("0.0");                     //    WalueBString ="0.0";
-                                                                //myCalculatorScoreLabel.setText(Score.toString());
-                                                                //isMethodSelected = false;
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
-
             }
         }
     }
-
-
-    public class insertDotToWalue implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(isMethodSelected == false){
-                if(WalueAString.equals((String)"")){
-                    WalueAString ="0.";
-                    myCalculatorScoreLabel.setText(WalueAString);
-                }else if(WalueAString == "0."){
-                    WalueAString = "0.";
-                }else if(WalueAString == "-"){
-                    WalueAString = "-0.";
-                }
-                else{
-                    WalueAString +=".";
-                    myCalculatorScoreLabel.setText(WalueAString);
-                }
-            }else{
-                WalueBString += ".";
-            }
-        }
-    }
-
-
-
+    //!!!!!!!!!!!!!!! METHOD FOR SUBSTRACT !!!!!!!!!!!!!!
     public class substractCurrentWalues implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(acctualSign =="+" || isMethodSelected == false){
-                isMethodSelected = true;
-                acctualSign = "-";
+            if(getAcctualSign() =="+" || getIsMethodSelected() == false){
+                setIsMethodSelected(true);
+                setAcctualSign("-");
                 fillLabelWithStringData("-");
-            }else {
+            }else if(getAcctualSign() =="-" ){
+                new equalsFromCurrentWalues().actionPerformed(e);  // Anonymous class
+                setWalueBString("-");
+            }
+            else {
                 try{
-                    if(WalueBString.equals("0.0") || WalueB == 0.0){
+                    if(getWalueBString().equals("0.0") || getWalueB() == 0.0){
                         fillLabelWithStringData("-");
                     }else {
-                        Score = WalueA - WalueB;
-                        WalueA = Score;
-                        WalueBString = "0.0";
-                        //myCalculatorScoreLabel.setText(Score.toString());
-                        //isMethodSelected = false;
+                        setScore(getWalueA() - getWalueB());
+                        setWalueA(getScore());
+                        setWalueBString("0.0");
                     }
                 }catch(Exception exep){
                     exep.printStackTrace();
@@ -261,6 +235,38 @@ public class SimpleCalculator implements Runnable{
             }
         }
     }
+
+    //!!!!!!!!!!!!!!! METHOD FOR ADDING DOT => (.) !!!!!!!!!!!!!!
+    public class insertDotToWalue implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(getIsMethodSelected() == false){
+                if(getWalueAString().equals("")){
+                    setWalueAString("0.");
+                    myCalculatorScoreLabel.setText(getWalueAString());
+                }else if(getWalueAString() == "0."){
+                    setWalueAString("0.");
+                }else if(getWalueAString() == "-"){
+                    setWalueAString("-0.");
+                }
+                else{
+                    setWalueAString(getWalueAString()+".");     //WalueAString +=".";
+                    myCalculatorScoreLabel.setText(getWalueAString());
+                }
+            }else{
+                if(getWalueBString()==("-")){
+                    setWalueBString("-0.");
+                }else if(getWalueBString()=="0.0"){
+                    setWalueBString("0.");
+                }
+                else{
+                    setWalueBString(getWalueBString()+".");//WalueBString += ".";
+                }
+            }
+        }
+    }
+
+    //!!!!!!!!!!!!!!! METHOD FOR EQUALS !!!!!!!!!!!!!!
     public class equalsFromCurrentWalues implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -373,7 +379,7 @@ public class SimpleCalculator implements Runnable{
 
    // public String fillLabelWithStringData(String param1){
     public void fillLabelWithStringData(String param1){
-        if(isMethodSelected){
+        if(getIsMethodSelected()){
             if(WalueBString.equals("0.0")) {
                 WalueBString = param1;
             }else{
