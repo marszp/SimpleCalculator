@@ -7,6 +7,16 @@ import java.math.BigDecimal;
 
 public class SimpleCalculator implements Runnable{
 
+    //!!!!!!!!!!!!!!! SIMPLE CALCULATOR !!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!! Generally works but still some things needs to be done !!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!! Rest of functionality will be performed someday... !!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!! TO DO:
+    //!!!!!!!!!!!!!!! 1. Implement multiplication
+    //!!!!!!!!!!!!!!! 2. Implement division
+    //!!!!!!!!!!!!!!! 3. Improve +/-/*/"/"= buttons
+    //!!!!!!!!!!!!!!! 4. Implement BigDecimal for Walues - better precison
+    //!!!!!!!!!!!!!!! REST of COD + COMMENTS BELOW =3
+
     //!!!!!!!!!!!!!!! INSTANCE VARIABLES called sometimes POLAMI !!!!!!!!!!!!!!!
     private Double WalueA = 0.0;
     private String WalueAString ="0.0";
@@ -50,20 +60,22 @@ public class SimpleCalculator implements Runnable{
     @Override
     public void run() {
         while(true){
-            if(getWalueAString() != "0.0"){
-                setWalueA(Double.parseDouble(WalueAString));
-                //Score = WalueA;
-            }
-            if(getWalueBString() != "0.0") {
-                if(getWalueBString()  !="-") {
-                    setWalueB(Double.parseDouble(WalueBString));
-                    //Score = WalueB;
+            try {
+                if (getWalueAString() != "0.0") {
+                    setWalueA(Double.parseDouble(getWalueAString()));
                 }
-            }
-            if(true){
-                // ADD HER DEPENCENCY FOR "+" & "-"
-                myCalculatorScoreLabel.setText(Score.toString());
-                myCalculatorMethodLabel.setText("A = " + WalueAString + " B = " + WalueBString);
+                if (getWalueBString() != "0.0") {
+                    if (getWalueBString() != "-") {
+                        setWalueB(Double.parseDouble(getWalueBString()));
+                    }
+                }
+                if (true) {
+                    // ADD HER DEPENCENCY FOR "+" & "-"
+                    myCalculatorScoreLabel.setText(Score.toString());
+                    myCalculatorMethodLabel.setText("A = " + WalueAString + " B = " + WalueBString);
+                }
+            }catch (Exception exp){
+                exp.printStackTrace();
             }
         }
     }
@@ -116,7 +128,6 @@ public class SimpleCalculator implements Runnable{
         JPanel panelForMethodLabel = new JPanel();
         JPanel panelForScore = new JPanel();
 
-
         //-----------SETTING FRAME COLORS AND ORIENTATION-----------
         myCalculatorFrame.getContentPane().add(panelForScore,BorderLayout.NORTH);
         panelForScore.setBackground(Color.GREEN);
@@ -146,7 +157,7 @@ public class SimpleCalculator implements Runnable{
         panelForCentralButtons.add(myCalculatorTwoButton,BorderLayout.SOUTH);
         panelForCentralButtons.add(myCalculatorZeroButton,BorderLayout.SOUTH);
 
-        //-----------CENTRAL PANEL FOR BUTTONS-WESTSIDE-----------
+        //-----------CENTRAL PANEL FOR BUTTONS-WEST SIDE-----------
         panelForCalcButtons.add(panelForWeastButtons,BorderLayout.WEST);
         panelForWeastButtons.setBackground(Color.RED);
         panelForWeastButtons.setPreferredSize(new Dimension(50,130));
@@ -194,14 +205,14 @@ public class SimpleCalculator implements Runnable{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(getIsMethodSelected()== false){
-                setIsMethodSelected(true);                      //isMethodSelected = true;
-                setAcctualSign("+");                            //acctualSign = "+";
+                setIsMethodSelected(true);
+                setAcctualSign("+");
             }else{
                 try{
-                    setScore(getWalueA()+getWalueB());          // Score = WalueA + WalueB;
-                    setWalueA(getScore());                      // WalueA = Score;
-                    setWalueAString(getScore().toString());     // WalueAString = Score.toString();
-                    setWalueBString("0.0");                     //    WalueBString ="0.0";
+                    setScore(getWalueA()+getWalueB());
+                    setWalueA(getScore());
+                    setWalueAString(getScore().toString());
+                    setWalueBString("0.0");
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }
@@ -217,7 +228,7 @@ public class SimpleCalculator implements Runnable{
                 setAcctualSign("-");
                 fillLabelWithStringData("-");
             }else if(getAcctualSign() =="-" ){
-                new equalsFromCurrentWalues().actionPerformed(e);  // Anonymous class
+                new equalsFromCurrentWalues().actionPerformed(e);  // Anonymous
                 setWalueBString("-");
             }
             else {
@@ -250,17 +261,17 @@ public class SimpleCalculator implements Runnable{
                     setWalueAString("-0.");
                 }
                 else{
-                    setWalueAString(getWalueAString()+".");     //WalueAString +=".";
+                    setWalueAString(getWalueAString()+".");
                     myCalculatorScoreLabel.setText(getWalueAString());
                 }
             }else{
-                if(getWalueBString()==("-")){
+                if(getWalueBString()=="-"){
                     setWalueBString("-0.");
                 }else if(getWalueBString()=="0.0"){
                     setWalueBString("0.");
                 }
                 else{
-                    setWalueBString(getWalueBString()+".");//WalueBString += ".";
+                    setWalueBString(getWalueBString()+".");
                 }
             }
         }
@@ -271,28 +282,90 @@ public class SimpleCalculator implements Runnable{
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
-                if(acctualSign == "+") {
-                    Score = WalueA+WalueB;
+                if(getAcctualSign() == "+") {
+                    setScore(getWalueA()+getWalueB());
                }
-                if (acctualSign == "-"){
-                    Score = WalueA + WalueB;
+                if (getAcctualSign() == "-"){
+                    setScore(getWalueA()+getWalueB());
                 }
-                WalueA = Score;
-                //WalueB = 0.0;
-                WalueBString = "0.0";
-                WalueAString = Score.toString();
+                setWalueA(getScore());
+                setWalueBString("0.0");
+                setWalueAString(getScore().toString());
             }catch (Exception ex){
                 ex.printStackTrace();
             }
         }
 
     }
+
+    //!!!!!!!!!!!!!!! METHOD FOR CHANGING SIGN OF WALUE !!!!!!!!!!!!!!
+    public class  changeSignOfWalue implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(isMethodSelected == false){
+                if(WalueAString == ""){
+                    WalueAString = "-";
+                    myCalculatorScoreLabel.setText(WalueAString);
+                }else{
+                    WalueA = Double.parseDouble(WalueAString);
+                    WalueA *= -1.0;
+                    WalueAString = WalueA.toString();
+                    myCalculatorScoreLabel.setText(WalueAString);
+                }
+            }else{
+                //WalueB = Double.parseDouble(WalueBString);
+                //WalueB *= -1.0;
+                if(WalueBString == ""){
+                    WalueBString = "-";
+                    myCalculatorScoreLabel.setText(WalueBString);
+                }else{
+                    WalueB = Double.parseDouble(WalueBString);
+                    WalueB *= -1.0;
+                    WalueBString = WalueB.toString();
+                    myCalculatorScoreLabel.setText(WalueBString);
+                }
+            }
+        }
+    }
+
+    //!!!!!!!!!!!!!!! METHOD FOR filling label with DATA !!!!!!!!!!!!!!
+    public void fillLabelWithStringData(String param1){
+        if(getIsMethodSelected()){
+            if(getWalueBString().equals("0.0")) {
+                setWalueBString(param1);
+            }else{
+                setWalueBString(getWalueBString()+param1);
+            }
+        }else{
+            if(getWalueAString().equals("0.0")){
+                setWalueAString(param1);
+            }else {
+                setWalueAString(getWalueAString()+param1);
+            }
+        }
+    }
+
+    ////!!!!!!!!!!!!!!! RESETING METHOD !!!!!!!!!!!!!!
+    public class clearLabelFromData implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setIsMethodSelected(false);
+            setScore(0.0);
+            setWalueA(0.0);
+            setWalueB(0.0);
+            setWalueAString("0.0");
+            setWalueBString("0.0");
+            myCalculatorScoreLabel.setText(Score.toString());
+            myCalculatorMethodLabel.setText("A = " + getWalueAString()+ " B = " + getWalueBString());
+        }
+    }
+
+    //!!!!!!!!!!!!!!! INNER CLASSES for perform ActionListener  !!!!!!!!!!!!!!!
     public class setZeroNumber implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             fillLabelWithStringData("0");
         }
-
     }
     public class setOneNumber implements ActionListener{
         @Override
@@ -320,8 +393,7 @@ public class SimpleCalculator implements Runnable{
     }
     public class setFiveNumber implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e) {fillLabelWithStringData("5");
-        }
+        public void actionPerformed(ActionEvent e) {fillLabelWithStringData("5"); }
     }
     public class setSixNumber implements ActionListener{
         @Override
@@ -343,72 +415,6 @@ public class SimpleCalculator implements Runnable{
     }
     public class setNineNumber implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e) {fillLabelWithStringData("9");
-        }
-
+        public void actionPerformed(ActionEvent e) {fillLabelWithStringData("9"); }
     }
-
-    public class  changeSignOfWalue implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-                if(isMethodSelected == false){
-                    if(WalueAString == ""){
-                        WalueAString = "-";
-                        myCalculatorScoreLabel.setText(WalueAString);
-                    }else{
-                        WalueA = Double.parseDouble(WalueAString);
-                        WalueA *= -1.0;
-                        WalueAString = WalueA.toString();
-                        myCalculatorScoreLabel.setText(WalueAString);
-                    }
-                }else{
-                    //WalueB = Double.parseDouble(WalueBString);
-                    //WalueB *= -1.0;
-                    if(WalueBString == ""){
-                        WalueBString = "-";
-                        myCalculatorScoreLabel.setText(WalueBString);
-                    }else{
-                        WalueB = Double.parseDouble(WalueBString);
-                        WalueB *= -1.0;
-                        WalueBString = WalueB.toString();
-                        myCalculatorScoreLabel.setText(WalueBString);
-                    }
-                }
-        }
-    }
-
-   // public String fillLabelWithStringData(String param1){
-    public void fillLabelWithStringData(String param1){
-        if(getIsMethodSelected()){
-            if(WalueBString.equals("0.0")) {
-                WalueBString = param1;
-            }else{
-                WalueBString += param1;
-                //return WalueBString;
-            }
-        }else{
-            if(WalueAString.equals("0.0")){
-                WalueAString = param1;
-            }else {
-                WalueAString += param1;
-                //return WalueAString;
-            }
-        }
-    }
-
-    public class clearLabelFromData implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            isMethodSelected = false;
-            setScore(0.0);
-            setWalueA(0.0);
-            setWalueB(0.0);
-            setWalueAString("0.0"); //WalueAString = "0.0";
-            setWalueBString("0.0"); //WalueBString = "0.0";
-
-            myCalculatorScoreLabel.setText(Score.toString());
-            myCalculatorMethodLabel.setText("A = " + WalueAString + " B = " + WalueBString);
-        }
-    }
-
 }
