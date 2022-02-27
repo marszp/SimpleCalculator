@@ -33,7 +33,7 @@ public class SimpleCalculator implements Runnable{
     public Double getScore() {
         return Score;
     }
-    public Boolean getIsMethodSelected() { return isMethodSelected; }
+    public Boolean getMethodSelected() { return isMethodSelected; }
     public String getAcctualSign() { return acctualSign; }
 
     // Setters
@@ -42,7 +42,8 @@ public class SimpleCalculator implements Runnable{
     public void setScore(Double tempScore) { Score = tempScore; }
     public void setValueAString(String tempValueAString) { ValueAString = tempValueAString; }
     public void setValueBString(String tempValueBString) { ValueBString = tempValueBString; }
-    public void setIsMethodSelected(Boolean tempIsMethodSelected) {isMethodSelected = tempIsMethodSelected;}
+    public void setMethodSelected(Boolean tempIsMethodSelected) {
+        isMethodSelected = tempIsMethodSelected;}
     public void setAcctualSign(String tempAcctualSign) { acctualSign = tempAcctualSign; }
 
     // Second trhead rund method - For GUI update
@@ -194,8 +195,8 @@ public class SimpleCalculator implements Runnable{
     public class AddCurrentValues implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(getIsMethodSelected() == false){
-                setIsMethodSelected(true);
+            if(getMethodSelected() == false){
+                setMethodSelected(true);
                 setAcctualSign("+");
             }else{
                 try{
@@ -213,8 +214,8 @@ public class SimpleCalculator implements Runnable{
     public class SubstractCurrentValues implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(getAcctualSign() == "+" || getIsMethodSelected() == false){
-                setIsMethodSelected(true);
+            if(getAcctualSign() == "+" || getMethodSelected() == false){
+                setMethodSelected(true);
                 setAcctualSign("-");
                 FillLabelWithStringData("-");
             }else if(getAcctualSign() == "-"){
@@ -241,7 +242,7 @@ public class SimpleCalculator implements Runnable{
     public class InsertDotToValue implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(getIsMethodSelected() == false){
+            if(getMethodSelected() == false){
                 if(getValueAString().equals("")){
                     setValueAString("0.");
                     myCalculatorScoreLabel.setText(getValueAString());
@@ -318,7 +319,7 @@ public class SimpleCalculator implements Runnable{
 
     // Methof for filling label with data
     public void FillLabelWithStringData(String param1){
-        if(getIsMethodSelected()){
+        if(getMethodSelected()){
             if(getValueBString().equals("0.0")) {
                 setValueBString(param1);
             }else{
@@ -337,7 +338,7 @@ public class SimpleCalculator implements Runnable{
     public class ClearLabelFromData implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            setIsMethodSelected(false);
+            setMethodSelected(false);
             setScore(0.0);
             setValueA(0.0);
             setValueB(0.0);
